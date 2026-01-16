@@ -1,21 +1,32 @@
 const nodemailer = require('nodemailer');
-const speakeasy = require('speakeasy');
 
 const transporter = nodemailer.createTransport({
   service: 'gmail',
-  auth: {
-    user: 'jaisharma572007@gmail.com',
-    pass: 'skiyuiixdnvbcech'
-  }
+  auth: { user: 'jaisharma572007@gmail.com', pass: 'skiyuiixdnvbcech' }
 });
 
-async function sendOTP(userEmail) {
-  const token = speakeasy.totp({ secret: 'PATHSHALAX_SECRET', encoding: 'base32' });
-  const mailOptions = {
-    from: 'PathshalaX <jaisharma572007@gmail.com>',
-    to: userEmail,
-    subject: 'Aapka PathshalaX OTP',
-    text: 'Aapka login code hai: ' + token
-  };
-  return transporter.sendMail(mailOptions);
-}
+let lastSentTime = 0;
+
+window.sendPathshalaOTP = async (email) => {
+  const currentTime = Date.now();
+  // 60 seconds ka cooldown timer
+  if (currentTime - lastSentTime < 60000) {
+    alert("Kripya 1 minute intezar karein naya code bhejne se pehle.");
+    return false;
+  }
+
+  const otp = Math.floor(100000 + Math.random() * 900000);
+  try {
+    await transporter.sendMail({
+      from: '"PathshalaX" <jaisharma572007@gmail.com>',
+      to: email,
+      subject: "Aapka PathshalaX OTP",
+      text: "Aapka login code hai: " + otp
+    });
+    lastSentTime = Date.now();
+    return true;
+  } catch (error) {
+    console.error("Mail error:", error);
+    return false;
+  }
+};
