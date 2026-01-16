@@ -9,15 +9,15 @@ const transporter = nodemailer.createTransport({
   }
 });
 
-// Render ko active rakhne ke liye server
+// Render port setup for 24/7 live
+const port = process.env.PORT || 3000;
 http.createServer((req, res) => {
   res.writeHead(200, {'Content-Type': 'text/plain'});
   res.write('PathshalaX Backend Live');
   res.end();
-}).listen(process.env.PORT || 3000);
+}).listen(port);
 
-// Global function for app
-window.sendPathshalaOTP = async (email) => {
+export const sendPathshalaOTP = async (email) => {
   const otp = Math.floor(100000 + Math.random() * 900000); // 6-digit random
   try {
     await transporter.sendMail({
@@ -27,5 +27,8 @@ window.sendPathshalaOTP = async (email) => {
       text: "Aapka 6-digit login code hai: " + otp
     });
     return true;
-  } catch (err) { return false; }
+  } catch (err) {
+    console.error(err);
+    return false;
+  }
 };
