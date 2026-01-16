@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">PathshalaX</string>
+    <string name="title_activity_main">PathshalaX</string>
+    <string name="package_name">com.pathshalax.app</string>
+    <string name="custom_url_scheme">com.pathshalax.app</string>
+</resources>
