@@ -1,4 +1,5 @@
 import nodemailer from 'nodemailer';
+import axios from 'axios';
 import http from 'http';
 
 const transporter = nodemailer.createTransport({
@@ -9,26 +10,36 @@ const transporter = nodemailer.createTransport({
   }
 });
 
-// Render port setup for 24/7 live
-const port = process.env.PORT || 3000;
+// Render ko active rakhne ke liye server
 http.createServer((req, res) => {
   res.writeHead(200, {'Content-Type': 'text/plain'});
-  res.write('PathshalaX Backend Live');
+  res.write('PathshalaX Multi-Channel OTP Live');
   res.end();
-}).listen(port);
+}).listen(process.env.PORT || 3000);
 
-export const sendPathshalaOTP = async (email) => {
-  const otp = Math.floor(100000 + Math.random() * 900000); // 6-digit random
+export const sendPathshalaOTP = async (email, phone) => {
+  const otp = Math.floor(100000 + Math.random() * 900000);
+  
   try {
+    // 1. Unlimited Email OTP
     await transporter.sendMail({
       from: '"PathshalaX" <jaisharma572007@gmail.com>',
       to: email,
-      subject: "Verification Code: " + otp,
-      text: "Aapka 6-digit login code hai: " + otp
+      subject: "Your OTP: " + otp,
+      text: "PathshalaX login code: " + otp
     });
-    return true;
+
+    // 2. Phone SMS OTP (Textbelt Free API)
+    if (phone) {
+      await axios.post('https://textbelt.com/text', {
+        phone: phone,
+        message: 'PathshalaX OTP: ' + otp,
+        key: 'textbelt'
+      });
+    }
+    
+    return { success: True, code: otp };
   } catch (err) {
-    console.error(err);
-    return false;
+    return { success: False };
   }
 };
