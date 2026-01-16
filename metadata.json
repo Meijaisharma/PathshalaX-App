@@ -1,0 +1,11 @@
+{
+  "requestFramePermissions": [
+    "camera",
+    "microphone"
+  ],
+  "androidPermissions": [
+    "android.permission.INTERNET"
+  ],
+  "name": "PathshalaX",
+  "description": ""
+}
