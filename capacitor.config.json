@@ -1,0 +1,12 @@
+{
+  "appId": "com.pathshalax.app",
+  "appName": "PathshalaX",
+  "webDir": "dist",
+  "bundledWebRuntime": false,
+  "plugins": {
+    "StatusBar": {
+      "overlay": true,
+      "style": "LIGHT"
+    }
+  }
+}
